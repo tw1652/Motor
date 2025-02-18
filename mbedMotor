@@ -1,0 +1,51 @@
+#include <mbed.h>
+
+using namespace::mbed;
+
+// Define motor control pins using DigitalOut
+DigitalOut A(P0_4);     // Red wire
+DigitalOut aMinus(P0_5); // Blue wire
+DigitalOut B(P0_30);     // Black wire
+DigitalOut bMinus(P0_29); // Green wire
+
+// Define the number of steps per revolution (360° / 18° per step)
+const int stepsPerRevolution = 20;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void runMotor(){
+  A.write(1);
+  aMinus.write(0);
+  B.write(0);
+  bMinus.write(1);
+
+  delay(10);
+  
+  A.write(1);
+  aMinus.write(0);
+  B.write(1);
+  bMinus.write(0);
+
+  delay(10);
+
+  A.write(0);
+  aMinus.write(1);
+  B.write(1);
+  bMinus.write(0);
+
+  delay(10);
+
+  A.write(0);
+  aMinus.write(1);
+  B.write(0);
+  bMinus.write(1);
+
+  delay(10);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  runMotor();
+}
