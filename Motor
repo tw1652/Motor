@@ -1,0 +1,51 @@
+#define A      2   // Red wire
+#define aMinus 3   // Blue wire
+#define B      4  // Black wire
+#define bMinus 5  // Green wire
+
+// Define the number of steps per revolution (360° / 18° per step)
+const int stepsPerRevolution = 20;
+
+void setup() {
+  Serial.begin(9600);
+
+  // Set pin modes
+  pinMode(A, OUTPUT);
+  pinMode(aMinus, OUTPUT);
+  pinMode(B, OUTPUT);
+  pinMode(bMinus, OUTPUT);
+}
+
+void runMotor() {
+  // Step 1
+  digitalWrite(A, HIGH);
+  digitalWrite(aMinus, LOW);
+  digitalWrite(B, LOW);
+  digitalWrite(bMinus, HIGH);
+  delay(10);
+
+  // Step 2
+  digitalWrite(A, HIGH);
+  digitalWrite(aMinus, LOW);
+  digitalWrite(B, HIGH);
+  digitalWrite(bMinus, LOW);
+  delay(10);
+
+  // Step 3
+  digitalWrite(A, LOW);
+  digitalWrite(aMinus, HIGH);
+  digitalWrite(B, HIGH);
+  digitalWrite(bMinus, LOW);
+  delay(10);
+
+  // Step 4
+  digitalWrite(A, LOW);
+  digitalWrite(aMinus, HIGH);
+  digitalWrite(B, LOW);
+  digitalWrite(bMinus, HIGH);
+  delay(10);
+}
+
+void loop() {
+  runMotor();
+}
