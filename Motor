@@ -3,7 +3,7 @@
 #define B      4  // Black wire
 #define bMinus 5  // Green wire
 
-// Define the number of steps per revolution (360° / 18° per step)
+// Define the number of steps per revolution (360° / 18° per step), as per datasheet
 const int stepsPerRevolution = 20;
 
 void setup() {
@@ -16,36 +16,77 @@ void setup() {
   pinMode(bMinus, OUTPUT);
 }
 
-void runMotor() {
-  // Step 1
-  digitalWrite(A, HIGH);
-  digitalWrite(aMinus, LOW);
-  digitalWrite(B, LOW);
-  digitalWrite(bMinus, HIGH);
-  delay(10);
+void clockwise() {
 
-  // Step 2
-  digitalWrite(A, HIGH);
-  digitalWrite(aMinus, LOW);
-  digitalWrite(B, HIGH);
-  digitalWrite(bMinus, LOW);
-  delay(10);
+  for (int i = 0; i < stepsPerRevolution; i++) {
+    // Step 1
+    digitalWrite(A, HIGH);
+    digitalWrite(aMinus, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(bMinus, HIGH);
+    delay(10);
 
-  // Step 3
-  digitalWrite(A, LOW);
-  digitalWrite(aMinus, HIGH);
-  digitalWrite(B, HIGH);
-  digitalWrite(bMinus, LOW);
-  delay(10);
+    // Step 2
+    digitalWrite(A, HIGH);
+    digitalWrite(aMinus, LOW);
+    digitalWrite(B, HIGH);
+    digitalWrite(bMinus, LOW);
+    delay(10);
 
-  // Step 4
-  digitalWrite(A, LOW);
-  digitalWrite(aMinus, HIGH);
-  digitalWrite(B, LOW);
-  digitalWrite(bMinus, HIGH);
-  delay(10);
+    // Step 3
+    digitalWrite(A, LOW);
+    digitalWrite(aMinus, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(bMinus, LOW);
+    delay(10);
+
+    // Step 4
+    digitalWrite(A, LOW);
+    digitalWrite(aMinus, HIGH);
+    digitalWrite(B, LOW);
+    digitalWrite(bMinus, HIGH);
+    delay(10);
+
+  }
+
+}
+
+void counterClockwise() {
+  for (int i = 0; i < stepsPerRevolution; i++) {
+    // Step 1
+    digitalWrite(A, LOW);
+    digitalWrite(aMinus, HIGH);
+    digitalWrite(B, LOW);
+    digitalWrite(bMinus, HIGH);
+    delay(10);
+
+    // Step 2
+    digitalWrite(A, LOW);
+    digitalWrite(aMinus, HIGH);
+    digitalWrite(B, HIGH);
+    digitalWrite(bMinus, LOW);
+    delay(10);
+
+    // Step 3
+    digitalWrite(A, HIGH);
+    digitalWrite(aMinus, LOW);
+    digitalWrite(B, HIGH);
+    digitalWrite(bMinus, LOW);
+    delay(10);
+
+    // Step 4
+    digitalWrite(A, HIGH);
+    digitalWrite(aMinus, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(bMinus, HIGH);
+    delay(10);
+    
+  }
 }
 
 void loop() {
-  runMotor();
+  clockwise();
+  delay(15500);
+  counterClockwise();
+  delay(15500);
 }
