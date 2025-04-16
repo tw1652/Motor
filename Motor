@@ -1,10 +1,10 @@
-#define A      2   // Red wire
-#define aMinus 3   // Blue wire
-#define B      4  // Black wire
-#define bMinus 5  // Green wire
+#define A      5   // Yellow wire
+#define aMinus 7   // Orange wire
+#define B      10  // Blue wire
+#define bMinus 12  // Green wire
 
 // Define the number of steps per revolution (360° / 18° per step), as per datasheet
-const int stepsPerRevolution = 20;
+int stepsPerRevolution = 20;
 
 void setup() {
   Serial.begin(9600);
@@ -16,77 +16,90 @@ void setup() {
   pinMode(bMinus, OUTPUT);
 }
 
-void clockwise() {
+void rotation(int angleInput, int direction){
+  stepsPerRevolution = angleInput/20;
 
-  for (int i = 0; i < stepsPerRevolution; i++) {
+  if (direction == 1) { // clockwise
+   for (int i = 0; i < stepsPerRevolution; i++) {
     // Step 1
     digitalWrite(A, HIGH);
     digitalWrite(aMinus, LOW);
     digitalWrite(B, LOW);
     digitalWrite(bMinus, HIGH);
-    delay(10);
+    delay(5);
 
     // Step 2
     digitalWrite(A, HIGH);
     digitalWrite(aMinus, LOW);
     digitalWrite(B, HIGH);
     digitalWrite(bMinus, LOW);
-    delay(10);
+    delay(5);
 
     // Step 3
     digitalWrite(A, LOW);
     digitalWrite(aMinus, HIGH);
     digitalWrite(B, HIGH);
     digitalWrite(bMinus, LOW);
-    delay(10);
+    delay(5);
 
     // Step 4
     digitalWrite(A, LOW);
     digitalWrite(aMinus, HIGH);
     digitalWrite(B, LOW);
     digitalWrite(bMinus, HIGH);
-    delay(10);
+    delay(5);
 
-  }
+    }
+  } 
+  
 
-}
-
-void counterClockwise() {
-  for (int i = 0; i < stepsPerRevolution; i++) {
+  else if (direction == 2) { // counter clockwise
+    for (int i = 0; i < stepsPerRevolution; i++) {
     // Step 1
     digitalWrite(A, LOW);
     digitalWrite(aMinus, HIGH);
     digitalWrite(B, LOW);
     digitalWrite(bMinus, HIGH);
-    delay(10);
+    delay(5);
 
     // Step 2
     digitalWrite(A, LOW);
     digitalWrite(aMinus, HIGH);
     digitalWrite(B, HIGH);
     digitalWrite(bMinus, LOW);
-    delay(10);
+    delay(5);
 
     // Step 3
     digitalWrite(A, HIGH);
     digitalWrite(aMinus, LOW);
     digitalWrite(B, HIGH);
     digitalWrite(bMinus, LOW);
-    delay(10);
+    delay(5);
 
     // Step 4
     digitalWrite(A, HIGH);
     digitalWrite(aMinus, LOW);
     digitalWrite(B, LOW);
     digitalWrite(bMinus, HIGH);
-    delay(10);
+    delay(5);
     
+    }
+  
   }
+
 }
 
 void loop() {
-  clockwise();
-  delay(15500);
-  counterClockwise();
-  delay(15500);
+  
+  rotation(20, 1);
+
+  while (1==0) { // Stop  if set equal
+
+    digitalWrite(A, LOW);
+    digitalWrite(aMinus, LOW);
+    digitalWrite(B, LOW);
+    digitalWrite(bMinus, LOW);
+
+    delay(1000);
+  }
 }
