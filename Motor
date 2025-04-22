@@ -1,26 +1,75 @@
+#include <DHT.h>
+#include <DHT_U.h>
+
+#define DHTPin 8
+#define DHTTYPE DHT22
+
 #define A      5   // Yellow wire
 #define aMinus 7   // Orange wire
 #define B      10  // Blue wire
 #define bMinus 12  // Green wire
 
+float readingX;
+float readingY;
+float readingZ;
+float humidity = -1;
+float temperature = -300;
+int value =4;
 // Define the number of steps per revolution (360° / 18° per step), as per datasheet
 int stepsPerRevolution = 20;
 
-void setup() {
-  Serial.begin(9600);
+DHT dht(DHTPin, DHTTYPE);
 
+void setup(){
+  Serial.begin(9600);
+  dht.begin();
   // Set pin modes
+  pinMode(2, OUTPUT); //X1
+  pinMode(4, OUTPUT);//Y1
+  pinMode(6, OUTPUT);//Z1
   pinMode(A, OUTPUT);
   pinMode(aMinus, OUTPUT);
   pinMode(B, OUTPUT);
   pinMode(bMinus, OUTPUT);
+/*
+  //X
+  digitalWrite (2, LOW);
+  //Y
+  digitalWrite (4, LOW);
+  // Z
+  digitalWrite (6, LOW);
+*/
+}
+
+void loop() 
+{ 
+  while (Serial.available()>0){
+    value = Serial.parseInt();
+    rotation(20, 1);
+    delay(50);
+  }
+  if (value == 0){
+    X_axis();
+  } else if (value == 1){
+    Y_axis();
+  } else if(value == 2){
+    Z_axis();
+  } else if(value == 3){
+    Temp();
+  }
+  else if(value == 3){
+    // Maybe add corresponding delay here to the python, or a bit longer here than the python to allow the value to be passed through.
+    delay(100);
+    rotation(value, 1); // Takes rotation value from the serial port
+
+  }
 }
 
 void rotation(int angleInput, int direction){
   stepsPerRevolution = angleInput/20;
 
   if (direction == 1) { // clockwise
-   for (int i = 0; i < stepsPerRevolution; i++) {
+   for (int i = 0; i < 5; i++) {//5 should 
     // Step 1
     digitalWrite(A, HIGH);
     digitalWrite(aMinus, LOW);
@@ -89,17 +138,27 @@ void rotation(int angleInput, int direction){
 
 }
 
-void loop() {
-  
-  rotation(20, 1);
+void X_axis() {
+  digitalWrite (2, LOW);
+  digitalWrite (4, LOW);
+  digitalWrite (6, LOW);
+}
+void Y_axis() {
+  digitalWrite (2, LOW);
+  digitalWrite (4, LOW);
+  digitalWrite (6, HIGH);
+}
+void Z_axis(){
+  digitalWrite (2, HIGH);
+  digitalWrite (4, LOW);
+  digitalWrite (6, LOW);
+}
+void Temp(){
+  humidity = dht.readHumidity();
+  temperature = dht.readTemperature();
+  Serial.print(humidity);
+  Serial.println(" %");
+  Serial.print(temperature);
+  Serial.println(" °C");
 
-  while (1==0) { // Stop  if set equal
-
-    digitalWrite(A, LOW);
-    digitalWrite(aMinus, LOW);
-    digitalWrite(B, LOW);
-    digitalWrite(bMinus, LOW);
-
-    delay(1000);
-  }
 }
